@@ -1,10 +1,13 @@
 ﻿  CR_new.c
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new\cr_new.c(72): warning C4101: “j”: 未引用的局部变量
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new\cr_new.c(72): warning C4101: “i”: 未引用的局部变量
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new\cr_new.c(380): warning C4101: “I”: 未引用的局部变量
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new\cr_new.c(482): warning C4101: “j”: 未引用的局部变量
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new\cr_new.c(482): warning C4101: “i”: 未引用的局部变量
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new\cr_new.c(644): warning C4101: “S”: 未引用的局部变量
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new\cr_new.c(642): warning C4101: “j”: 未引用的局部变量
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new\cr_new.c(642): warning C4101: “i”: 未引用的局部变量
-  CR_new.vcxproj -> C:\学习相关\研一下\王老师相关\CR_new\代码\CR_new\Debug\CR_new.exe
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new\cr_new.c(73): warning C4101: “j”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new\cr_new.c(73): warning C4101: “i”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new\cr_new.c(493): warning C4101: “I”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new\cr_new.c(490): warning C4101: “n”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new\cr_new.c(598): warning C4101: “m”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new\cr_new.c(598): warning C4101: “j”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new\cr_new.c(598): warning C4101: “i”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new\cr_new.c(598): warning C4101: “n”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new\cr_new.c(767): warning C4101: “S”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new\cr_new.c(765): warning C4101: “j”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new\cr_new.c(765): warning C4101: “i”: 未引用的局部变量
+  CR_new.vcxproj -> D:\研一下\王老师相关\CR_new\CR_new\CR_new\Debug\CR_new.exe

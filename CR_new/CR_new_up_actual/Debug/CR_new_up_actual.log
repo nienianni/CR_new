@@ -1,0 +1,11 @@
+﻿  Cr_new_up_actual.c
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_up_actual\cr_new_up_actual.c(71): warning C4101: “j”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_up_actual\cr_new_up_actual.c(71): warning C4101: “i”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_up_actual\cr_new_up_actual.c(145): warning C4101: “m”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_up_actual\cr_new_up_actual.c(273): warning C4244: “函数”: 从“double”转换到“int”，可能丢失数据
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_up_actual\cr_new_up_actual.c(313): warning C4101: “j”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_up_actual\cr_new_up_actual.c(383): warning C4101: “j”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_up_actual\cr_new_up_actual.c(383): warning C4101: “i”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_up_actual\cr_new_up_actual.c(452): warning C4101: “j”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_up_actual\cr_new_up_actual.c(452): warning C4101: “i”: 未引用的局部变量
+  CR_new_up_actual.vcxproj -> D:\研一下\王老师相关\CR_new\CR_new\CR_new\Debug\CR_new_up_actual.exe

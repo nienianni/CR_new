@@ -26,7 +26,10 @@
     <Text Include="w_a.txt">
       <Filter>资源文件</Filter>
     </Text>
-    <Text Include="I_L_pd.txt">
+    <Text Include="I_L_pd_a.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="help1.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>

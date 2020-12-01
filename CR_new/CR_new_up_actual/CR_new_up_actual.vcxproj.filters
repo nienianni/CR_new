@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="资源文件\w_4">
+      <UniqueIdentifier>{f48be832-26a9-46a3-80e7-a9ef1309f195}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="资源文件\w_0">
+      <UniqueIdentifier>{9e6616d2-c9f5-4976-9a06-a9490d411004}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="资源文件\w_9">
+      <UniqueIdentifier>{b08037e6-45a6-4abc-9477-ce1aef88b52e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Cr_new_up_actual.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="help1.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="peoplenum_a.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="b_alpha_I_L_pd_a.txt">
+      <Filter>资源文件\w_4</Filter>
+    </Text>
+    <Text Include="b_pd_I_L_alpha_a.txt">
+      <Filter>资源文件\w_4</Filter>
+    </Text>
+    <Text Include="3_alpha_I_L_pd_a.txt">
+      <Filter>资源文件\w_0</Filter>
+    </Text>
+    <Text Include="3_sub_alpha_I_L_pd_a.txt">
+      <Filter>资源文件\w_0</Filter>
+    </Text>
+    <Text Include="a_alpha_I_L_pd_a.txt">
+      <Filter>资源文件\w_0</Filter>
+    </Text>
+    <Text Include="a_pd_I_L_alpha_a.txt">
+      <Filter>资源文件\w_0</Filter>
+    </Text>
+    <Text Include="w_a_9.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="w_a_4.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="w_a_0.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="c_alpha_I_L_pd_a.txt">
+      <Filter>资源文件\w_9</Filter>
+    </Text>
+    <Text Include="c_pd_I_L_alpha_a.txt">
+      <Filter>资源文件\w_9</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

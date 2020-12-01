@@ -126,9 +126,16 @@
     <ClCompile Include="CR_new.c" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="help1.txt" />
+    <Text Include="help_peoplenum.txt" />
     <Text Include="I_L_pd.txt" />
     <Text Include="peoplenum.txt" />
-    <Text Include="w_a.txt" />
+    <Text Include="w_0.txt" />
+    <Text Include="w_9.txt" />
+    <Text Include="w_a_0.txt" />
+    <Text Include="w_a_4.txt" />
+    <Text Include="w_4.txt" />
+    <Text Include="w_a_9.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

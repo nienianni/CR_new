@@ -1,0 +1,17 @@
+﻿E:\VS2017\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: 中间目录(Debug\)包含从另一个项目(help.vcxproj)共享的文件。   这会导致错误的清除和重新生成行为。
+  help1.c
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\help\help1.c(72): warning C4101: “a”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\help\help1.c(71): warning C4101: “j”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\help\help1.c(71): warning C4101: “i”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\help\help1.c(141): warning C4101: “m”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\help\help1.c(227): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\help\help1.c(203): warning C4101: “n”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\help\help1.c(313): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\help\help1.c(454): warning C4101: “I”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\help\help1.c(452): warning C4101: “n”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\help\help1.c(525): warning C4101: “j”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\help\help1.c(525): warning C4101: “i”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\help\help1.c(656): warning C4101: “S”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\help\help1.c(654): warning C4101: “j”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\help\help1.c(654): warning C4101: “i”: 未引用的局部变量
+  help.vcxproj -> D:\研一下\王老师相关\CR_new\CR_new\CR_new\Debug\CR_SF_help.exe

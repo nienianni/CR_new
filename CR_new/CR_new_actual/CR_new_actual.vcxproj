@@ -22,7 +22,8 @@
     <ClCompile Include="CR_new_actual.c" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="I_L_pd.txt" />
+    <Text Include="help1.txt" />
+    <Text Include="I_L_pd_a.txt" />
     <Text Include="peoplenum_a.txt" />
     <Text Include="w_a.txt" />
   </ItemGroup>

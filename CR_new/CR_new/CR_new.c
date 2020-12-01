@@ -5,8 +5,8 @@
 #include<time.h>
 //#define pi 3.1415926
 
-int NETWORK_SIZE;
-double PROBABILITY_OF_EAGE;
+int NETWORK_SIZE=50;
+double PROBABILITY_OF_EAGE=0.7;
 int ** adjacentMatrix_w;
 //double ** adjacentMatrix_R;
 
@@ -22,14 +22,16 @@ struct people
 int *city_people_num;//记录每个城市的初始人口数；
 int *wSum_loc;//记录W矩阵每一行最大数值（每一行的和）的位置
 
-int *I_people_num;
-int *des_people_num;
+double ** peopleTodes_num;
+double* sum_people_nji;
+double** P_peopleTodes_num;
+double *I_people_num;
+double *des_people_num;
 double *I_pro_ini;
 double *I_pro;
 double *I_pro_t;
-double *sum_w;
-double *P;//记录扩散发生后，S态个体在每个种群中会被感染的概率
-
+double *P1;//记录扩散发生后，S态个体在每个种群中会被感染的概率
+double *P2;
 
 FILE * fp1;
 FILE * fp2;
@@ -38,19 +40,17 @@ FILE * fp4;
 double pd;//出门的概率
 double lambda;
 double mu = 0.2;
-int k = 15;//在每个集群中随机挑选的接触人数
-int theta= 4;//免疫力较强集群的受感染力
-double alpha = 0.4;//,免疫力薄弱集群个数占比
-//double la;
-int tmax = 1000;//总次数
+int k = 20;//在每个集群中随机挑选的接触人数
+double alpha = 0.7;//,免疫力薄弱集群个数占比
+int tmax = 800;//总次数
 int t_test = 500;//实验次数
 
 void load_city_people_num();
 void initial();//初始化数组
 void load_struct_people();//读文件 读入.sta和.ini_state初始化people结构体
-//void generate_ER_Network_ini();//生成邻接矩阵，每个节点可朝哪些地方走
-//void load_Matrix_w_a();//将邻接矩阵变为带权的
-void load_Matrix_w();//将邻接矩阵变为带权的
+void generate_ER_Network_ini();//生成邻接矩阵，每个节点可朝哪些地方走
+void load_Matrix_w_a();//将邻接矩阵变为带权的
+void load_Matrix_w();
 void load_I_pro_ini();
 void load_I_pro(int t);
 void load_Matrix_wSum();//将带权邻接矩阵权值变为：到该点的和
@@ -58,6 +58,7 @@ double load_randnum();//生成[0,1]之间的随机数
 
 void load_people_des();
 void load_people_current_state(int t);
+void load_peopleTodes_num();
 void load_I_des_people_num();
 void load_people_fin_state();
 void load_I_pro_t(int t);
@@ -69,22 +70,20 @@ void load_write_file();
 
 int main()
 {
-	int i, j;
-	printf("请输入节点个数");
-	scanf_s("%d", &NETWORK_SIZE);
-	printf("请输入连边概率");
-	scanf_s("%lf", &PROBABILITY_OF_EAGE);
-	srand((unsigned)time(NULL));
+	int i, j,m;
+	m = 0;
+	//srand((unsigned)time(NULL));
 	load_city_people_num();
 	initial();
 	load_struct_people();
 	load_I_pro_ini();
-	//generate_ER_Network_ini();
-	//load_Matrix_w_a();
+	generate_ER_Network_ini();
 	load_Matrix_w();
-	load_Matrix_wSum();
-
-	load_write_file();
+	//load_Matrix_w_a();
+	//load_Matrix_w();
+	//load_Matrix_wSum();
+	
+	//load_write_file();
 	return 0;
 }
 void load_city_people_num()
@@ -110,7 +109,7 @@ void initial()
 	adjacentMatrix_w = (int**)malloc(sizeof(int *) * NETWORK_SIZE); //分配指针数组
 	for (i = 0; i < NETWORK_SIZE; i++)
 	{
-		adjacentMatrix_w[i] = (int *)malloc(sizeof(int) * NETWORK_SIZE);//分配每个指针指向的数组
+		adjacentMatrix_w[i] = (int*)malloc(sizeof(int) * NETWORK_SIZE);//分配每个指针指向的数组
 	}
 	/*adjacentMatrix_R = (double**)malloc(sizeof(double *) * NETWORK_SIZE); //分配指针数组
 	for (i = 0; i < NETWORK_SIZE; i++)
@@ -122,14 +121,25 @@ void initial()
 	{
 		city[i] = (struct people*)malloc(sizeof(struct people)*city_people_num[i]);//叶子城市里有多少个人
 	}
-	//sum_w = (double *)malloc(sizeof(double)*NETWORK_SIZE);
 	wSum_loc = (int *)malloc(sizeof(int)*NETWORK_SIZE);
-	I_people_num = (int *)malloc(sizeof(int)*NETWORK_SIZE);
-	des_people_num = (int *)malloc(sizeof(int)*NETWORK_SIZE);
+	peopleTodes_num = (double**)malloc(sizeof(double*) * NETWORK_SIZE); //分配指针数组
+	for (i = 0; i < NETWORK_SIZE; i++)
+	{
+		peopleTodes_num[i] = (double*)malloc(sizeof(double) * NETWORK_SIZE);//分配每个指针指向的数组
+	}
+	sum_people_nji = (double *)malloc(sizeof(double)*NETWORK_SIZE);
+	P_peopleTodes_num = (double**)malloc(sizeof(double*) * NETWORK_SIZE); //分配指针数组
+	for (i = 0; i < NETWORK_SIZE; i++)
+	{
+		P_peopleTodes_num[i] = (double*)malloc(sizeof(double) * NETWORK_SIZE);//分配每个指针指向的数组
+	}
+	I_people_num = (double *)malloc(sizeof(double)*NETWORK_SIZE);
+	des_people_num = (double *)malloc(sizeof(double)*NETWORK_SIZE);
 	I_pro_ini = (double *)malloc(sizeof(double)*NETWORK_SIZE);
 	I_pro = (double *)malloc(sizeof(double)*NETWORK_SIZE);
 	I_pro_t = (double *)malloc(sizeof(double)*t_test);
-	P = (double *)malloc(sizeof(double)*NETWORK_SIZE);
+	P1 = (double *)malloc(sizeof(double)*NETWORK_SIZE);
+	P2 = (double *)malloc(sizeof(double)*NETWORK_SIZE);
 }
 void load_struct_people()
 {
@@ -181,7 +191,7 @@ void load_I_pro_ini()
 		I_pro_ini[m] = ((double)I / (I + S));
 	}
 }
-/*void generate_ER_Network_ini()
+void generate_ER_Network_ini()
 {
 	int i, j;
 	for (i = 0; i < NETWORK_SIZE; i++)
@@ -201,30 +211,16 @@ void load_I_pro_ini()
 			}
 		}
 	}//重复直到所有的节点对都被选择一次
-	//printf("%d\n", count*2);
+	printf("%d\n", count*2);
 }
-void load_Matrix_w_a()
-{
-	int i, j;
-	errno_t err;
-	err = fopen_s(&fp2, "w_a.txt", "w");
-	for (i = 0; i < NETWORK_SIZE; i++)
-	{
-		for (j = 0; j < NETWORK_SIZE; j++)
-		{
-			fprintf_s(fp2, "%d ", adjacentMatrix_w[i][j]);
-		}
-	}
-}*/
-
-/*void load_Matrix_w()
+void load_Matrix_w()
 {
 	int i, j;
 	errno_t err;
 	errno_t err1;
 	int b;
-	err = fopen_s(&fp2, "w.txt", "r");
-	err1 = fopen_s(&fp3, "w_a.txt", "w");
+	err = fopen_s(&fp2, "w_9.txt", "r");
+	err1 = fopen_s(&fp3, "w_a_9.txt", "w");
 	if (err != 0)
 	{
 		puts("不能打开文件");
@@ -253,8 +249,21 @@ void load_Matrix_w_a()
 	}
 	fclose(fp2);
 	fclose(fp3);
-}*/
-void load_Matrix_w()
+}
+void load_Matrix_w_a()
+{
+	int i, j;
+	errno_t err;
+	err = fopen_s(&fp2, "w_a_big.txt", "w");
+	for (i = 0; i < NETWORK_SIZE; i++)
+	{
+		for (j = 0; j < NETWORK_SIZE; j++)
+		{
+			fprintf_s(fp2, "%d ", adjacentMatrix_w[i][j]);
+		}
+	}
+}
+/*void load_Matrix_w()
 {
 	int i, j;
 	int a;
@@ -273,7 +282,7 @@ void load_Matrix_w()
 		}
 	}
 	fclose(fp4);
-}
+}*/
 void load_Matrix_wSum()
 {
 	int i, j;
@@ -300,6 +309,7 @@ double load_randnum()
 	Rnum = rand() / (RAND_MAX + 0.0);
 	return Rnum;
 }
+
 void load_people_des()
 {
 	int i, j, m;
@@ -309,14 +319,10 @@ void load_people_des()
 		for (j = 0; j < city_people_num[i]; j++)
 		{
 			r_pd = load_randnum();
-			//printf("pd:%f  r_pd:%f\n", pd, r_pd);
 			if (r_pd < pd)//要出去
 			{
 				double r_where;
 				r_where = (adjacentMatrix_w[city[i][j].sta][wSum_loc[city[i][j].sta]])* (rand() / (RAND_MAX + 0.0));
-				/*printf("r=%d\n", adjacentMatrix_w[city[i][j].sta][wSum_loc[city[i][j].sta]]);
-				printf("r_where=%f\n", r_where);
-				printf("\n");*/
 				for (m = 0; m < NETWORK_SIZE; m++)
 				{
 					if (adjacentMatrix_w[city[i][j].sta][m] >= r_where)
@@ -347,6 +353,113 @@ void load_people_current_state(int t)
 		}
 	}
 }
+/*void load_peopleTodes_num()
+{
+	int i, j,m,n,num;
+	for (i = 0; i < NETWORK_SIZE; i++)
+	{
+		for (j = 0; j <NETWORK_SIZE; j++)
+		{
+			num = 0;
+			for (m = 0; m < NETWORK_SIZE; m++)
+			{
+				for (n = 0; n < city_people_num[m]; n++)
+				{
+					if (city[m][n].sta == i && city[m][n].des == j)
+					{
+						num++;
+					}
+				}
+			}
+			peopleTodes_num[i][j] = num;
+		}
+	}
+	
+}
+void load_P_nji()
+{
+	int i, j;
+	double a;
+	for (i = 0; i < NETWORK_SIZE; i++)
+	{
+		a = 0;
+		for (j = 0; j < NETWORK_SIZE; j++)
+		{
+			a = peopleTodes_num[j][i] + a;
+		}
+		sum_people_nji[i] = a;   //到节点i的总人数
+	}
+	for (i = 0; i < NETWORK_SIZE; i++)
+	{
+		for (j = 0; j < NETWORK_SIZE; j++)
+		{
+			P_peopleTodes_num[j][i] = peopleTodes_num[j][i] / sum_people_nji[i];
+		}
+	}
+}
+void load_P()
+{
+	int i, j;
+	double a, b;
+	for (i = 0; i < NETWORK_SIZE; i++)
+	{
+		a = 1;
+		b = 1;
+		for (j = 0; j < NETWORK_SIZE; j++)
+		{
+			a = (pow((1 - lambda * I_pro[j]), P_peopleTodes_num[j][i] * k))*a;
+			b = (pow((1 - lambda * I_pro[j]), P_peopleTodes_num[j][i]))*b;
+		}
+		P1[i] = 1 - a;
+		P2[i] = 1 - b;
+	}
+}
+void  load_people_fin_state()
+{
+	int i, j,m;
+	double r1,r2,r3;
+	for (i = 0; i < NETWORK_SIZE; i++)
+	{
+		for (j = 0; j < city_people_num[i]; j++)
+		{
+			if (city[i][j].current_state == 'S')
+			{
+				if (city[i][j].label == 'w')
+				{
+					r1 = load_randnum();
+					if (r1 < P1[city[i][j].des])
+					{
+						city[i][j].fin_state = 'I';
+					}
+					else
+						city[i][j].fin_state = city[i][j].current_state;
+				}
+				if (city[i][j].label == 'm')
+				{
+					r3 = load_randnum();
+					if (r3 < P2[city[i][j].des])
+					{
+						city[i][j].fin_state = 'I';
+					}
+					else
+						city[i][j].fin_state = city[i][j].current_state;
+				}
+			}
+			if (city[i][j].current_state == 'I')
+			{
+				r2 = load_randnum();
+				if (r2 < mu)
+				{
+					city[i][j].fin_state = 'S';
+				}
+				else
+				{
+					city[i][j].fin_state = 'I';
+				}
+			}
+		}
+	}
+}*/
 void load_I_des_people_num()//记录扩散后每个集群中的感染人数
 {
 	int i, j, m, num1,num2;
@@ -374,9 +487,9 @@ void load_I_des_people_num()//记录扩散后每个集群中的感染人数
 }
 void load_people_fin_state()
 {
-	int i, j,m;
+	int i, j,m,n;
 	int A,B;
-	double r1, r11, r2, r21,r3;
+	double r0, r1, r11, r2, r21, r3;
 	int I;//记录该集群里面I态的人数
 	for (i = 0; i < NETWORK_SIZE; i++)
 	{
@@ -384,19 +497,22 @@ void load_people_fin_state()
 		{
 			if (city[i][j].current_state == 'S')
 			{
-				if (city[i][j].label == 'w')//一次感染则感染
+				//if (city[i][j].label == 'w')
+				//{
+				r0 = load_randnum();
+				if (r0 < alpha)
 				{
 					A = 0;
 					for (m = 0; m < k; m++)
 					{
-						r1 =des_people_num[city[i][j].des]* load_randnum();
-						if (r1 < I_people_num[city[i][j].des])//如果碰到的是I态节点
+						r1 = load_randnum()*des_people_num[city[i][j].des];
+						if (r1 < I_people_num[city[i][j].des])
 						{
 							r11 = load_randnum();
 							if (r11 < lambda)
 							{
+								A = 2;
 								city[i][j].fin_state = 'I';
-								A = 5;
 								break;
 							}
 						}
@@ -406,30 +522,30 @@ void load_people_fin_state()
 						city[i][j].fin_state = 'S';
 					}
 				}
-				if (city[i][j].label == 'm')
+				else
 				{
 					B = 0;
-					for (m = 0; m < k; m++)
+					r2 = load_randnum()*des_people_num[city[i][j].des];
+					if (r2 < I_people_num[city[i][j].des])
 					{
-						r2 = des_people_num[city[i][j].des] * load_randnum();
-						if (r2 < I_people_num[city[i][j].des])
+						r21 = load_randnum();
+						if (r21 < lambda)
 						{
-							r21 = load_randnum();
-							if (r21 < lambda)
-							{
-								B++;
-							}
+							B = 2;
+							city[i][j].fin_state = 'I';
+							break;
 						}
-					}
-					if (B >= theta)
-					{
-						city[i][j].fin_state = 'I';
 					}
 					if (B == 0)
 					{
 						city[i][j].fin_state = 'S';
 					}
 				}
+			//	}
+				/*if (city[i][j].label == 'm')
+				{
+					
+				}*/
 			}
 			if (city[i][j].current_state == 'I')
 			{
@@ -479,11 +595,22 @@ void load_I_pro_t(int t)
 }
 void load_I_pro_limit()
 {
-	int i, j, t;
+	int i, j, t,m,n;
 	for (t = 0; t < tmax; t++)
 	{
 		//printf("pd:%f t:%d lambda:%f \n",pd, t,lambda);
 		load_I_pro(t);
+		if (t >= (tmax - t_test))
+		{
+			load_I_pro_t(t);
+		}
+		load_people_current_state(t);
+		load_people_des();
+		//load_peopleTodes_num();
+		//load_P_nji();
+		//load_P();
+		load_I_des_people_num();
+		load_people_fin_state();
 		/* printf("rho:\n");
 		 for (i = 0; i < NETWORK_SIZE; i++)
 		 {
@@ -491,10 +618,7 @@ void load_I_pro_limit()
 		 }
 		 printf("\n");
 		 printf("\n");*/
-		if (t >= (tmax - t_test))
-		{
-			load_I_pro_t(t);
-		}
+		
 		/*printf("I_pro_t:\n");
 		for (i = 0; i < t_test; i++)
 		{
@@ -512,7 +636,7 @@ void load_I_pro_limit()
 			printf("\n");
 		}
 		printf("\n");*/
-		load_people_des();
+	
 		/*for (j = 0; j < NETWORK_SIZE; j++)
 		{
 			for (i = 0; i <city_people_num[j]; i++)
@@ -522,8 +646,7 @@ void load_I_pro_limit()
 			printf("\n");
 			printf("\n");
 		}*/
-		load_people_current_state(t);
-		load_I_des_people_num();
+		
 		/*printf("I_num:\n");
 		for (i = 0; i < NETWORK_SIZE; i++)
 		{
@@ -531,7 +654,7 @@ void load_I_pro_limit()
 		}
 		printf("\n");
 		printf("\n");*/
-		load_people_fin_state();
+		
 		/*for (j = 0; j < NETWORK_SIZE; j++)
 		{
 			for (i = 0; i <city_people_num[j]; i++)
@@ -643,7 +766,7 @@ void load_write_file()
 	double pro;
 	double S;
 	errno_t err1;
-	err1 = fopen_s(&fp3, "I_L_pd.txt", "w");
+	err1 = fopen_s(&fp3, "help1.txt", "w");
 	//errno_t err2;
 	//err2 = fopen_s(&fp5, "I_L_pd_sus.txt", "w");
 	if (err1 != 0)
@@ -656,8 +779,8 @@ void load_write_file()
 	//}
 	for (pd = 0; pd <= 1.1; pd = pd + 0.5)//3
 	{
-		fprintf_s(fp3, "pd=%f\n", pd);
-		for (lambda =0; lambda <= 0.101; lambda = lambda + 0.002)//50
+		//fprintf_s(fp3, "pd=%f\n", pd);
+		for (lambda = 0; lambda <= 0.0501; lambda = lambda + 0.001)//50
 		{
 			load_I_pro_limit();
 			pro = load_I_pro_zong();

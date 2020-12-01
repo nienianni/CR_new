@@ -5,16 +5,17 @@
 #include<time.h>
 
 int NETWORK_SIZE = 50;
-double PROBABILITY_OF_EAGE = 0.8;
+double PROBABILITY_OF_EAGE = 0.7;
 double** adjacentMatrix_w;
 double* sum_w;
+double* sum_people_nji;
+double** P_peopleTodes_num;
 double pd;
 double lambda;
-int k = 15;//每次遇到的人
-int theta = 4;//免疫力较强集群的受感染力
-double alpha = 0.4;//,免疫力薄弱集群个数占比
+int k = 20;//每次遇到的人
+double alpha = 0.7;//接触K个人的集群个数占比
 double mu = 0.2;
-int tmax = 501;
+int tmax = 401;
 int t_test = 1;
 
 
@@ -44,11 +45,13 @@ struct people
 
 void load_city_people_num();
 void initial();
+void load_I_pro_ini();
+void load_struct_people();
 void load_Matrix_w_fenzi();
 void load_Matrix_w();//将邻接矩阵变为带权的
-void load_struct_people();
 void load_peopleTodes_num();
-void load_I_pro_ini();
+void load_P_nji();
+
 void load_P();
 void load_PI();
 void load_rho(int t);//100个步长后的每个集群的感染占比
@@ -111,10 +114,17 @@ void initial()
 		peopleTodes_num[i] = (double*)malloc(sizeof(double) * NETWORK_SIZE);//分配每个指针指向的数组
 	}
 	I_pro_ini = (double *)malloc(sizeof(double)*NETWORK_SIZE);
+	sum_people_nji= (double *)malloc(sizeof(double)*NETWORK_SIZE);
+	P_peopleTodes_num = (double**)malloc(sizeof(double*) * NETWORK_SIZE); //分配指针数组
+	for (i = 0; i < NETWORK_SIZE; i++)
+	{
+		P_peopleTodes_num[i] = (double*)malloc(sizeof(double) * NETWORK_SIZE);//分配每个指针指向的数组
+	}
 	P = (double *)malloc(sizeof(double)*NETWORK_SIZE);
 	PI = (double *)malloc(sizeof(double)*NETWORK_SIZE);
 	rho = (double *)malloc(sizeof(double)*NETWORK_SIZE);
 	rho_t = (double *)malloc(sizeof(double)*t_test);
+
 	contact_M = (double**)malloc(sizeof(double *) * NETWORK_SIZE); //分配指针数组
 	for (i = 0; i < NETWORK_SIZE; i++)
 	{
@@ -125,8 +135,7 @@ void initial()
 	{
 		adjacentMatrix_w_alpha[i] = (double *)malloc(sizeof(double) * NETWORK_SIZE);//分配每个指针指向的数组
 	}
-
-	sum = (double *)malloc(sizeof(double)*NETWORK_SIZE);
+	//sum = (double *)malloc(sizeof(double)*NETWORK_SIZE);
 }
 void load_struct_people()
 {
@@ -175,19 +184,19 @@ void load_Matrix_w_fenzi()
 	int a;
 	errno_t err;
 	err = fopen_s(&fp2, "w_a.txt", "r");
-	if (err != 0)
+if (err != 0)
+{
+	puts("不能打开文件");
+}
+for (i = 0; i < NETWORK_SIZE; i++)
+{
+	for (j = 0; j < NETWORK_SIZE; j++)
 	{
-		puts("不能打开文件");
+		fscanf_s(fp2, "%d ", &a);
+		adjacentMatrix_w[i][j] = a;
 	}
-	for (i = 0; i < NETWORK_SIZE; i++)
-	{
-		for (j = 0; j < NETWORK_SIZE; j++)
-		{
-			fscanf_s(fp2, "%d ", &a);
-			adjacentMatrix_w[i][j] = a;
-		}
-	}
-	fclose(fp2);
+}
+fclose(fp2);
 }
 void load_Matrix_w()
 {
@@ -228,78 +237,42 @@ void load_peopleTodes_num()
 		}
 	}
 }
-double load_C(int m, int n)//排列组合 C(rho_[j]*k,theta)
+void load_P_nji()
 {
+	int i,j;
 	double a;
-	int i, j, k,b=1,c=1,d=1;
-	for (i = m; i > 0; i--)
-	{
-		b = b * i;
-	}
-	for (j = n; j > 0; j--)
-	{
-		c = c * j;
-	}
-	for (k = (m-n); k > 0; k--)
-	{
-		d = d * k;
-	}
-	a = (double)b / (c * d);
-	return a;
-}
-double load_binomial(double lambda ,int m,int n )//lambda 不取1  二项分布
-{
-	double a, b;
-	a = load_C(m, n);
-	b = pow((1 - lambda), (m - n))*pow(lambda, n)*a;
-	return b;
-}
-double load_binomial_double(double lambda, double m, int n)//lambda 不取1  二项分布
-{
-	double a, b;
-	a =0.6*load_C(floor(m), n)+0.4*load_C(ceil(m),n);
-	b = pow((1 - lambda), (m - n))*pow(lambda, n)*a;
-	return b;
-} 
-double load_rho_nji(int i)
-{
-	int j;
-	double a=0,b=0,c;
-	for (j = 0; j < NETWORK_SIZE; j++)
-	{
-		a = peopleTodes_num[j][i] * rho[j]+a;
-	}
-	for (j = 0; j < NETWORK_SIZE; j++)
-	{
-		b = peopleTodes_num[j][i] + b;
-	}
-	return c = a / b;
-}
-void load_P()
-{
-	int i, j,m;
-	double a,b1,b2;
 	for (i = 0; i < NETWORK_SIZE; i++)
 	{
-		b1 = 0;
-		a = load_rho_nji(i)*k;
-		if ((int)a == a)
+		a = 0;
+		for (j = 0; j < NETWORK_SIZE; j++)
 		{
-			for (m = 0; m < theta - 1; m++)
-			{
-				b1 = load_binomial(lambda, a, m) + b1;
-			}
-			b2 = load_binomial(lambda, a, 0);
+			a= peopleTodes_num[j][i] + a;
 		}
-		else
+		sum_people_nji[i] = a;   //到节点i的总人数
+	}
+	for (i = 0; i < NETWORK_SIZE; i++)
+	{
+		for (j = 0; j < NETWORK_SIZE; j++)
 		{
-			for (m = 0; m < theta - 1; m++)
-			{
-				b1 = load_binomial_double(lambda, a, m) + b1;
-			}
-			b2 = load_binomial_double(lambda, a, 0);
+			P_peopleTodes_num[j][i] = peopleTodes_num[j][i] / sum_people_nji[i];
 		}
-		P[i] = alpha*(1-b2)+(1-alpha)*(1-b1);
+	}
+}
+
+void load_P()
+{
+	int i, j;
+	double a,b;
+	for (i = 0; i < NETWORK_SIZE; i++)
+	{
+		a = 1;
+		b = 1;
+		for (j = 0; j < NETWORK_SIZE; j++)
+		{
+			a = (pow((1 - lambda * rho[j]), P_peopleTodes_num[j][i]*k))*a;
+			b=(pow((1 - lambda * rho[j]), P_peopleTodes_num[j][i]))*b;
+		}
+		P[i] = alpha*(1-a)+(1-alpha)*(1-b);
 	}
 }
 void load_PI()
@@ -345,19 +318,22 @@ void load_limit_rho()
 	for (t = 0; t < tmax; t++)
 	{
 		//printf(" pd:%If lambda:%If t:%d \n", pd,lambda,t);
-		load_rho(t);
-		/*printf("rho\n");
-		for (i = 0; i < NETWORK_SIZE; i++)
-		{
-			printf("%.20lf ", rho[i]);
-
-		}
-		printf("\n");*/
-		//printf("\n");
+		load_rho(t);	
 		if (t >= (tmax - t_test))
 		{
 			load_rho_t(t);
 		}
+		load_P();
+		load_PI();
+		/*printf("PI\n");
+		for (i = 0; i < NETWORK_SIZE; i++)
+		{
+			printf("%f ",PI[i]);
+
+		}
+		printf("\n");
+		printf("\n");*/
+		
 		/*printf("W:\n");
 		for (j = 0; j < NETWORK_SIZE; j++)
 		{
@@ -380,12 +356,10 @@ void load_limit_rho()
 					printf("%f ", adjacentMatrix_R[j][i]);
 					printf("%d,%d\n", j, i);
 				}
-
 			}
 			printf("\n");
 		}
 		printf("\n");*/
-		load_peopleTodes_num();
 		/*printf("peopletodes:\n");
 		for (j = 0; j < NETWORK_SIZE; j++)
 		{
@@ -396,8 +370,6 @@ void load_limit_rho()
 			printf("\n");
 		}
 		printf("\n");*/
-		load_P();
-		load_PI();
 	}
 }
 
@@ -405,10 +377,6 @@ double load_I_pro_zong()
 {
 	int i;
 	double pro_zong, zong = 0;
-	/*for (i = 0; i < t_test; i++)
-	{
-		printf("%d:%f\n",i, rho_t[i]);
-	}*/
 	for (i = 0; i < t_test; i++)
 	{
 		zong = rho_t[i] + zong;
@@ -421,15 +389,21 @@ void load_write_file()
 	double pro;
 	int i, j;
 	errno_t err;
-	err = fopen_s(&fp3, "I_L_pd.txt", "w");
+	err = fopen_s(&fp3, "help1.txt", "w");
 	if (err != 0)
 	{
 		puts("不能打开文件");
 	}
 	for (pd = 0; pd <= 1.1; pd = pd + 0.5)//50
 	{
-		fprintf_s(fp3, "pd=%f\n", pd);
-		for (lambda = 0; lambda <= 0.101; lambda = lambda + 0.002)//50
+		//fprintf_s(fp3, "pd=%f\n", pd);
+		load_peopleTodes_num();
+		load_P_nji();
+		/*for (i = 0; i < NETWORK_SIZE; i++)
+		{
+			printf("%f \n", sum_people_nji[i]);
+		}*/
+		for (lambda = 0; lambda <= 0.0501; lambda = lambda + 0.001)//50
 		{
 			load_limit_rho();
 			pro = load_I_pro_zong();
@@ -562,80 +536,3 @@ void load_write_M()
 	}
 	fclose(fp4);
 }*/
-
-/*for (j = 0; j < NETWORK_SIZE; j++)
-		{
-			for (i = 0; i < NETWORK_SIZE; i++)
-			{
-				printf("%f ", adjacentMatrix[j][i]);
-			}
-			printf("\n");
-		}
-		printf("\n");*/
-
-		/*
-		printf("rho:\n");
-				for (i = 0; i < NETWORK_SIZE; i++)
-				{
-					printf("%f ", rho[i]);
-				}
-				printf("\n");
-				printf("\n");
-		*/
-
-		/*
-		void load_city_people_num()
-		{
-			city_people_num = (int *)malloc(sizeof(int)*NETWORK_SIZE);
-			int i, a, num;
-			errno_t err;
-			err = fopen_s(&fp, "people3.txt", "r");
-			if (err != 0)
-			{
-				puts("不能打开文件");
-			}
-			for (i = 0; i < NETWORK_SIZE; i++)
-			{
-				num = 0;
-				while (1)
-				{
-					fscanf_s(fp, "%d", &a);
-					if (feof(fp))
-						break;
-					if (a == i)
-					{
-						num++;
-						fseek(fp, 3, 1);
-					}
-					else
-						break;
-				}
-				city_people_num[i] = num;
-			}
-			fclose(fp);
-		}
-		*/
-
-		/*
-		void load_struct_people()
-		{
-			int i, j;
-			errno_t err;
-			err = fopen_s(&fp3, "people3.txt", "r");
-			if (err != 0)
-			{
-				puts("不能打开文件");
-			}
-			for (i = 0; i < NETWORK_SIZE; i++)
-			{
-				for (j = 0; j < city_people_num[i]; j++)
-				{
-					fscanf_s(fp3, "%d", &city[i][j].sta);
-					fscanf_s(fp3, "%c", &city[i][j].ini_state, sizeof(char));
-					city[i][j].des = 22;
-					city[i][j].fin_state = 'N';
-				}
-			}
-			fclose(fp3);
-		}
-		*/

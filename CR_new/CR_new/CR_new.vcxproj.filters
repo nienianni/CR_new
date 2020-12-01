@@ -23,10 +23,31 @@
     <Text Include="peoplenum.txt">
       <Filter>资源文件</Filter>
     </Text>
-    <Text Include="w_a.txt">
+    <Text Include="I_L_pd.txt">
       <Filter>资源文件</Filter>
     </Text>
-    <Text Include="I_L_pd.txt">
+    <Text Include="help1.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="help_peoplenum.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="w_0.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="w_a_0.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="w_a_4.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="w_4.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="w_9.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="w_a_9.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>

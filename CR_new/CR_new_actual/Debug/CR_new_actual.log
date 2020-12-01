@@ -1,13 +1,9 @@
 ﻿  CR_new_actual.c
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new_actual\cr_new_actual.c(65): warning C4101: “j”: 未引用的局部变量
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new_actual\cr_new_actual.c(65): warning C4101: “i”: 未引用的局部变量
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new_actual\cr_new_actual.c(133): warning C4101: “m”: 未引用的局部变量
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new_actual\cr_new_actual.c(260): warning C4244: “函数”: 从“double”转换到“int”，可能丢失数据
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new_actual\cr_new_actual.c(290): warning C4244: “函数”: 从“double”转换到“int”，可能丢失数据
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new_actual\cr_new_actual.c(292): warning C4244: “函数”: 从“double”转换到“int”，可能丢失数据
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new_actual\cr_new_actual.c(280): warning C4101: “j”: 未引用的局部变量
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new_actual\cr_new_actual.c(344): warning C4101: “j”: 未引用的局部变量
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new_actual\cr_new_actual.c(344): warning C4101: “i”: 未引用的局部变量
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new_actual\cr_new_actual.c(422): warning C4101: “j”: 未引用的局部变量
-c:\学习相关\研一下\王老师相关\cr_new\代码\cr_new\cr_new_actual\cr_new_actual.c(422): warning C4101: “i”: 未引用的局部变量
-  CR_new_actual.vcxproj -> C:\学习相关\研一下\王老师相关\CR_new\代码\CR_new\Debug\CR_new_actual.exe
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_actual\cr_new_actual.c(68): warning C4101: “j”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_actual\cr_new_actual.c(68): warning C4101: “i”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_actual\cr_new_actual.c(142): warning C4101: “m”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_actual\cr_new_actual.c(317): warning C4101: “j”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_actual\cr_new_actual.c(317): warning C4101: “i”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_actual\cr_new_actual.c(390): warning C4101: “j”: 未引用的局部变量
+d:\研一下\王老师相关\cr_new\cr_new\cr_new\cr_new_actual\cr_new_actual.c(390): warning C4101: “i”: 未引用的局部变量
+  CR_new_actual.vcxproj -> D:\研一下\王老师相关\CR_new\CR_new\CR_new\Debug\CR_new_actual.exe
